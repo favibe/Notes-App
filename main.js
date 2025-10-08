@@ -10,6 +10,9 @@ let pinTitle = document.querySelector(".pin-title");
 let otherTitle = document.querySelector(".other-title");
 let arrayOfNotes = JSON.parse(localStorage.getItem("notes")) || [];
 
+
+noteDisplay.addEventListener()
+
 addNoteButton.addEventListener("click", () => {
     if (note.value.trim().length > 0 || title.value.trim().lenght > 0) {
         arrayOfNotes = [...arrayOfNotes, {id: Date.now(), title: title.value.trim(), note: note.value.trim(), isPinned: false, isArchived: false}];
@@ -18,3 +21,4 @@ addNoteButton.addEventListener("click", () => {
     }
     
 });
+showOtherNotes.innerHTML = renderNotes(arrayOfNotes);
