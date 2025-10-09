@@ -11,6 +11,11 @@ let otherTitle = document.querySelector(".other-title");
 let arrayOfNotes = JSON.parse(localStorage.getItem("notes")) || [];
 
 
+if (arrayOfNotes.lenght > 0){
+    pinTitle.classList.toggle("d-none");
+    otherTitle.classList.toggle("d-none");
+}
+
 noteDisplay.addEventListener("click", (event) =>{
     let type = event.target.dataset.type;
     let noteId = event.target.dataset.id;
@@ -20,8 +25,15 @@ noteDisplay.addEventListener("click", (event) =>{
     switch (type) {
         case "del":
             arrayOfNotes = arrayOfNotes.filter(({id})=> id.toString() !==noteId);
-            showOtherNotes.innerHTML = renderNotes(arrayOfNotes);
+            showOtherNotes.innerHTML = renderNotes(arrayOfNotes.filter(({isPinned}) => !isPinned));
+            showPinnedNotes.innerHTML = renderNotes(arrayOfNotes.filter(({isPinned})=> isPinned))
             localStorage.setItem("notes", JSON.stringify(arrayOfNotes));
+            break;
+            case "pinned":
+                arrayOfNotes = arrayOfNotes.map(note => note.id.toString()  === noteId ? {...note, isPinned: !note.isPinned}: note);
+                showOtherNotes.innerHTML = renderNotes(arrayOfNotes.filter(({isPinned}) => !isPinned));
+                showPinnedNotes.innerHTML = renderNotes(arrayOfNotes.filter(({isPinned}) => isPinned));
+                localStorage.setItem("notes", JSON.stringify(arrayOfNotes));
     }
 })
 
