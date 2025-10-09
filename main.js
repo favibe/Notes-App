@@ -25,15 +25,21 @@ noteDisplay.addEventListener("click", (event) =>{
     switch (type) {
         case "del":
             arrayOfNotes = arrayOfNotes.filter(({id})=> id.toString() !==noteId);
-            showOtherNotes.innerHTML = renderNotes(arrayOfNotes.filter(({isPinned}) => !isPinned));
+            showOtherNotes.innerHTML = renderNotes(arrayOfNotes.filter(({isPinned, isArchived}) => !isPinned && !isArchived));
             showPinnedNotes.innerHTML = renderNotes(arrayOfNotes.filter(({isPinned})=> isPinned))
             localStorage.setItem("notes", JSON.stringify(arrayOfNotes));
             break;
             case "pinned":
                 arrayOfNotes = arrayOfNotes.map(note => note.id.toString()  === noteId ? {...note, isPinned: !note.isPinned}: note);
-                showOtherNotes.innerHTML = renderNotes(arrayOfNotes.filter(({isPinned}) => !isPinned));
+                showOtherNotes.innerHTML = renderNotes(arrayOfNotes.filter(({isPinned, isArchived}) => !isPinned && !isArchived));
                 showPinnedNotes.innerHTML = renderNotes(arrayOfNotes.filter(({isPinned}) => isPinned));
                 localStorage.setItem("notes", JSON.stringify(arrayOfNotes));
+                break;
+                case "archived":
+                    arrayOfNotes = arrayOfNotes.map(note => note.id.toString() === noteId ? {...note, isArchived: !note.isArchived} : note);
+                    showOtherNotes.innerHTML = renderNotes(arrayOfNotes.filter(({isArchived}) => !isArchived));
+                    localStorage.setItem("notes", arrayOfNotes);
+
     }
 })
 
@@ -45,4 +51,6 @@ addNoteButton.addEventListener("click", () => {
     }
     
 });
-showOtherNotes.innerHTML = renderNotes(arrayOfNotes);
+
+showOtherNotes.innerHTML = renderNotes(arrayOfNotes.filter(({isPinned, isArchived}) => !isPinned && !isArchived));
+showPinnedNotes.innerHTML = renderNotes(arrayOfNotes.filter(({isPinned}) => isPinned));
