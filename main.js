@@ -11,7 +11,19 @@ let otherTitle = document.querySelector(".other-title");
 let arrayOfNotes = JSON.parse(localStorage.getItem("notes")) || [];
 
 
-noteDisplay.addEventListener()
+noteDisplay.addEventListener("click", (event) =>{
+    let type = event.target.dataset.type;
+    let noteId = event.target.dataset.id;
+    console.log({type, noteId});
+
+    //
+    switch (type) {
+        case "del":
+            arrayOfNotes = arrayOfNotes.filter(({id})=> id.toString() !==noteId);
+            showOtherNotes.innerHTML = renderNotes(arrayOfNotes);
+            localStorage.setItem("notes", JSON.stringify(arrayOfNotes));
+    }
+})
 
 addNoteButton.addEventListener("click", () => {
     if (note.value.trim().length > 0 || title.value.trim().lenght > 0) {
